@@ -1,0 +1,20 @@
+# syntax=docker/dockerfile:1.4
+FROM mcr.microsoft.com/dotnet/aspnet:9.0.3 AS base
+WORKDIR /app
+EXPOSE 5000
+
+FROM mcr.microsoft.com/dotnet/sdk:9.0.301 AS build
+WORKDIR /src
+
+COPY . .
+RUN dotnet restore SchedulerApi.sln
+
+# Build and publish only the GenerativeApi project
+RUN dotnet publish SchedulerApi.GenerativeApi/SchedulerApi.GenerativeApi.csproj -c Debug -o /out --no-restore
+
+FROM base AS final
+WORKDIR /app
+COPY --from=build /out .
+#COPY --from=build /src/App_Data ./App_Data
+
+ENTRYPOINT ["dotnet", "SchedulerApi.GenerativeApi.dll"]

@@ -1,0 +1,44 @@
+**Event Extraction Prompt — TL;DR Version**
+
+**🎯 Goal:** Extract events + actions from user instructions into a JSON array.
+
+**Event Fields:**
+
+* `names`: all people involved (event + actions).
+* `eventDateTime`: ISO 8601 (UTC+3).
+* `location`: string or null.
+* `remindBefore`: datetime or null.
+* `actions`: array of actions.
+
+**Action Structure:**
+
+* `actionType`: one of `sms`, `send_email`, `notify`, `call`, `slack`, `teams`, `googlecalendar`.
+* `targetNames`: people receiving the action.
+* `note`: localized, friendly message in the user’s language.
+
+**📌 Notes:**
+
+* Resolve vague times (e.g., “tomorrow”) to UTC+3.
+* Group actions by default; split if user asks (e.g., “send separately”).
+* Localized notes: short for SMS, polite for email, brief for notify/call.
+* Output **only** a valid JSON array (no extra text).
+
+**Example Output:**
+
+```json
+[
+  {
+    "names": ["Mike"],
+    "eventDateTime": "2025-07-20T10:00:00",
+    "location": "office",
+    "remindBefore": "2025-07-20T09:30:00",
+    "actions": [
+      {
+        "actionType": "sms",
+        "targetNames": ["Mike"],
+        "note": "Hi Mike, reminder about our meeting at 10:00 in the office."
+      }
+    ]
+  }
+]
+```

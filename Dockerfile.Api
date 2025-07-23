@@ -1,0 +1,25 @@
+# syntax=docker/dockerfile:1.4
+FROM mcr.microsoft.com/dotnet/aspnet:9.0.3 AS base
+WORKDIR /app
+EXPOSE 5000
+
+FROM mcr.microsoft.com/dotnet/sdk:9.0.301 AS build
+WORKDIR /src
+
+# Copy everything and restore
+COPY . .
+RUN dotnet restore SchedulerApi.sln
+
+# Build and publish only the Api project
+RUN dotnet publish SchedulerApi.Api/SchedulerApi.Api.csproj -c Debug -o /out --no-restore
+
+FROM base AS final
+WORKDIR /app
+
+# Copy published files
+COPY --from=build /out .
+
+# Copy App_Data directory if needed
+# COPY --from=build /src/App_Data ./App_Data
+
+ENTRYPOINT ["dotnet", "SchedulerApi.Api.dll"]

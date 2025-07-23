@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace>SchedulerApi.Integrations</RootNamespace>
+        <AssemblyName>SchedulerApi.Integrations</AssemblyName>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SchedulerApi.Application\SchedulerApi.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Google.Apis.Auth" Version="1.70.0" />
+      <PackageReference Include="Google.Apis.Calendar.v3" Version="1.69.0.3746" />
+      <PackageReference Include="OpenAI" Version="2.2.0" />
+      <PackageReference Include="Twilio" Version="7.11.5" />
+    </ItemGroup>
+
+</Project>

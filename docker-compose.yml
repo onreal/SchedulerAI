@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile.Api
+    ports:
+      - "5002:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+      - ASPNETCORE_SQLLITE_CS=/app/App_Data/scheduler.db
+    volumes:
+      - ./App_Data:/app/App_Data
+
+  generative:
+    build:
+      context: .
+      dockerfile: Dockerfile.GenerativeApi
+    ports:
+      - "5003:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+      - ASPNETCORE_SQLLITE_CS=/app/App_Data/scheduler.db
+    volumes:
+      - ./App_Data:/app/App_Data
+
+  migrator:
+    build:
+      context: .
+      dockerfile: Dockerfile.Migrator
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_SQLLITE_CS=/app/App_Data/scheduler.db
+    command: >
+      sh -c "dotnet ef database update --project SchedulerApi.Infrastructure/SchedulerApi.Infrastructure.csproj --startup-project SchedulerApi.Api/SchedulerApi.Api.csproj"
+    volumes:
+      - ./:/app
+      - ./App_Data:/app/App_Data
+      - ./SchedulerApi.Api:/app/SchedulerApi.Api
