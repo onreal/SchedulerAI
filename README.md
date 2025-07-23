@@ -38,9 +38,9 @@ With the generative API you can translate any user prompt to a unified JSON obje
 
 ---
 ## ⚡🕒 Docker Install
-Clone this repository locally, and on the root of the solution:
+Clone this repository locally and
+
 `docker-compose up --build`
-Enjoy :)
 
 ---
 
@@ -188,7 +188,6 @@ RESPONSE
   }
 ]
 ```
-
 
 ## 🧑‍💻 Contributions
 
