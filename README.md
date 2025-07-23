@@ -51,14 +51,144 @@ Enjoy :)
 - AI-generated marketing campaign sequences scheduled for specific time windows.
 - Smart notifications based on calendar events.
 - Generate events from user prompts and return a unified JSON to use within your application.
-
 ---
 
-## 📈 Roadmap
+## 🤖 Generative reminders
+`POST /v1/reminders/generate`
 
-- Under discussions.
+### Example 1
 
----
+```
+REQUEST
+{
+"message": "Tomorrow meeting with Mike and John at 14:00 at office, remind me at 13:30, send them and Anna an email after."
+}
+```
+
+```
+RESPONSE
+[
+  {
+    "names": ["Mike", "John", "Anna"],
+    "eventDateTime": "2025-07-19T14:00:00",
+    "location": "office",
+    "remindBefore": "2025-07-19T13:30:00",
+    "actions": [
+      {
+        "actionType": "send_email",
+        "targetNames": ["Mike", "John", "Anna"],
+        "note": "Hello Mike, John, and Anna, just a reminder that we have a meeting today at 14:00 in the office."
+      }
+    ]
+  }
+]
+```
+
+### Example 2
+
+```
+REQUEST
+{
+"message": "Tomorrow meeting with Mike, John, and Anna at 14:00 at office. Send each of them an email separately."
+}
+```
+
+```
+RESPONSE
+[
+  {
+    "names": ["Mike", "John", "Anna"],
+    "eventDateTime": "2025-07-19T14:00:00",
+    "location": "office",
+    "remindBefore": null,
+    "actions": [
+      {
+        "actionType": "send_email",
+        "targetNames": ["Mike"],
+        "note": "Hello Mike, just a reminder that we have a meeting today at 14:00 in the office."
+      },
+      {
+        "actionType": "send_email",
+        "targetNames": ["John"],
+        "note": "Hello John, just a reminder that we have a meeting today at 14:00 in the office."
+      },
+      {
+        "actionType": "send_email",
+        "targetNames": ["Anna"],
+        "note": "Hello Anna, just a reminder that we have a meeting today at 14:00 in the office."
+      }
+    ]
+  }
+]
+```
+
+### Example 3
+
+```
+REQUEST
+{
+"message": "Αύριο στις 9 έχω ραντεβού με τη Μαρία στο κέντρο, υπενθύμισέ μου στις 8:30 και στείλε SMS στη Λένα."
+}
+```
+
+```
+RESPONSE
+[
+  {
+    "names": ["Μαρία", "Λένα"],
+    "eventDateTime": "2025-07-19T09:00:00",
+    "location": "κέντρο",
+    "remindBefore": "2025-07-19T08:30:00",
+    "actions": [
+      {
+        "actionType": "sms",
+        "targetNames": ["Λένα"],
+        "note": "Γεια σου Λένα, αύριο έχω ραντεβού με τη Μαρία στο κέντρο."
+      }
+    ]
+  }
+]
+```
+### Example 4
+
+```
+REQUEST
+{
+"message": "Monday 10:00 conference call with Sarah and Jim, remind me 15 minutes before. Tuesday 15:00 dentist appointment, send SMS to Kate and email to the team."
+}
+```
+
+```
+RESPONSE
+[
+  {
+    "names": ["Sarah", "Jim"],
+    "eventDateTime": "2025-07-21T10:00:00",
+    "location": "conference call",
+    "remindBefore": "2025-07-21T09:45:00",
+    "actions": []
+  },
+  {
+    "names": ["Kate", "team"],
+    "eventDateTime": "2025-07-22T15:00:00",
+    "location": "dentist appointment",
+    "remindBefore": null,
+    "actions": [
+      {
+        "actionType": "sms",
+        "targetNames": ["Kate"],
+        "note": "Hi Kate, I have a dentist appointment tomorrow at 15:00."
+      },
+      {
+        "actionType": "send_email",
+        "targetNames": ["team"],
+        "note": "Hello team, I will be at the dentist appointment tomorrow at 15:00."
+      }
+    ]
+  }
+]
+```
+
 
 ## 🧑‍💻 Contributions
 
