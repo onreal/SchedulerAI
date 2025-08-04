@@ -1,42 +1,46 @@
-version: "3.8"
+steps:
+  # Build scheduler
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-f', 'Dockerfile.Api', '-t', 'gcr.io/$PROJECT_ID/scheduler-api', '.']
 
-services:
-  scheduler:
-    build:
-      context: .
-      dockerfile: Dockerfile.Api
-    ports:
-      - "5002:5000"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:5000
-      - ASPNETCORE_SQLLITE_CS=/app/App_Data/scheduler.db
-    volumes:
-      - ./App_Data:/app/App_Data
+  # Build generative
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-f', 'Dockerfile.GenerativeApi', '-t', 'gcr.io/$PROJECT_ID/generative-api', '.']
 
-  generative:
-    build:
-      context: .
-      dockerfile: Dockerfile.GenerativeApi
-    ports:
-      - "5003:5000"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:5000
-      - ASPNETCORE_SQLLITE_CS=/app/App_Data/scheduler.db
-    volumes:
-      - ./App_Data:/app/App_Data
+  # Build migrator
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-f', 'Dockerfile.Migrator', '-t', 'gcr.io/$PROJECT_ID/migrator', '.']
 
-  migrator:
-    build:
-      context: .
-      dockerfile: Dockerfile.Migrator
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_SQLLITE_CS=/app/App_Data/scheduler.db
-    command: >
-      sh -c "dotnet ef database update --project SchedulerApi.Infrastructure/SchedulerApi.Infrastructure.csproj --startup-project SchedulerApi.Api/SchedulerApi.Api.csproj"
-    volumes:
-      - ./:/app
-      - ./App_Data:/app/App_Data
-      - ./SchedulerApi.Api:/app/SchedulerApi.Api
+  # Run migrator
+  - name: 'gcr.io/$PROJECT_ID/migrator'
+    entrypoint: 'sh'
+    args: ['-c', 'dotnet ef database update --project SchedulerApi.Infrastructure/SchedulerApi.Infrastructure.csproj --startup-project SchedulerApi.Api/SchedulerApi.Api.csproj']
+
+  # Deploy scheduler to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - scheduler-api
+      - --image=gcr.io/$PROJECT_ID/scheduler-api
+      - --region=us-central1
+      - --platform=managed
+      - --allow-unauthenticated
+
+  # Deploy generative to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - generative-api
+      - --image=gcr.io/$PROJECT_ID/generative-api
+      - --region=us-central1
+      - --platform=managed
+      - --allow-unauthenticated
+
+images:
+  - 'gcr.io/$PROJECT_ID/scheduler-api'
+  - 'gcr.io/$PROJECT_ID/generative-api'
+  - 'gcr.io/$PROJECT_ID/migrator'
