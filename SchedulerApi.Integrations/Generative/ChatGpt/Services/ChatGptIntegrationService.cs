@@ -31,6 +31,11 @@ public class ChatGptIntegrationService : IChatGptIntegrationService
         _chatMessages.Add(ChatMessage.CreateUserMessage(chatMessage));
     }
 
+    public void ClearUserMessages()
+    {
+        _chatMessages.Clear();
+    }
+
     public async Task HandleAsync(UserIntegration userIntegration, IConfiguration configuration,
         CancellationToken cancellationToken = default)
     {
@@ -58,6 +63,9 @@ public class ChatGptIntegrationService : IChatGptIntegrationService
 
         var response = await chatClient.CompleteChatAsync(_chatMessages.ToList(), cancellationToken: cancellationToken);
         var cleaned = System.Text.RegularExpressions.Regex.Unescape(response.Value.Content[0].Text);
+
+        ClearUserMessages();
+        
         return JsonConvert.DeserializeObject<T>(cleaned);
     }
 }
