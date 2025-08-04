@@ -6,4 +6,6 @@ public interface IGenerativeIntegrationServices : IIntegrationService
         CancellationToken cancellationToken = default);
 
     void SetSystemMessages(string chatMessage);
+
+    void ClearUserMessages();
 }

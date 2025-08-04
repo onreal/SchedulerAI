@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using SchedulerApi.Application.Agents.ContactEnricher.Services;
+using SchedulerApi.Application.Agents.Contracts;
+using SchedulerApi.Application.Agents.IntentClassifier.Services;
+using SchedulerApi.Application.Agents.ScheduleParser.Services;
 using SchedulerApi.Application.Integrations.Contracts;
 using SchedulerApi.Application.Recipient.Contracts;
 using SchedulerApi.Application.Recipient.Services;
@@ -82,6 +86,9 @@ services.AddScoped<IGenerativeIntegrationServices, ChatGptIntegrationService>();
 services.AddScoped<ITransactionalIntegrationServices, TwilioIntegrationService>();
 services.AddScoped<IReminderService, ReminderService>();
 services.AddScoped<ISchedulerIntegrationRunner, SchedulerIntegrationRunner>();
+services.AddScoped<IAgentService, SchedulerParserAgent>();
+services.AddScoped<IAgentService, IntentClassifierAgent>();
+services.AddScoped<IAgentService, ContactEnricherAgent>();
 
 services.AddHttpContextAccessor();
 

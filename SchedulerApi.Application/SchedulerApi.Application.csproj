@@ -24,4 +24,8 @@
       <EmbeddedResource Include="Prompts\ChatGPT\ReminderExtractPrompt.txt" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Reminder\DTOs\" />
+    </ItemGroup>
+
 </Project>

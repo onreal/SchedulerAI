@@ -24,6 +24,13 @@ public class RecipientRepository : IRecipientRepository
         if (ef != null) _mapping.Register(ef.Id, ef);
         return ef?.ToDomain();
     }
+    
+    public async Task<Recipient?> GetByNameAsync(string name)
+    {
+        var ef = await _context.Recipients.SingleOrDefaultAsync(r => r.Name == name);
+        if (ef != null) _mapping.Register(ef.Id, ef);
+        return ef?.ToDomain();
+    }
 
     public async Task<IEnumerable<Recipient>> GetByIdsAsync(List<Guid> ids)
     {
