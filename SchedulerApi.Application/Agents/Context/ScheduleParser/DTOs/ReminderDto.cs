@@ -1,4 +1,4 @@
-namespace SchedulerApi.Application.Agents.ScheduleParser.DTOs;
+namespace SchedulerApi.Application.Agents.Context.ScheduleParser.DTOs;
 
 public record ReminderDto(
     string[]? Names,

@@ -1,4 +1,4 @@
-using SchedulerApi.Application.Agents.ScheduleParser.DTOs;
+using SchedulerApi.Application.Agents.Context.ScheduleParser.DTOs;
 
 namespace SchedulerApi.Application.Reminder.Contract;
 

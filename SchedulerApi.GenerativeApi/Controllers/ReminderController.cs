@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using SchedulerApi.Application.Agents.ScheduleParser.DTOs;
+using SchedulerApi.Application.Agents.Context.ScheduleParser.DTOs;
 using SchedulerApi.Application.Attributes;
 using SchedulerApi.Application.Reminder.Contract;
 using SchedulerApi.Application.Shared;

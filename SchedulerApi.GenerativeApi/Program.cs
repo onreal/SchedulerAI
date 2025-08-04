@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
-using SchedulerApi.Application.Agents.ContactEnricher.Services;
+using SchedulerApi.Application.Agents.Context.ContactEnricher.Services;
+using SchedulerApi.Application.Agents.Context.IntentClassifier.Services;
+using SchedulerApi.Application.Agents.Context.ScheduleParser.Services;
 using SchedulerApi.Application.Agents.Contracts;
-using SchedulerApi.Application.Agents.IntentClassifier.Services;
-using SchedulerApi.Application.Agents.ScheduleParser.Services;
 using SchedulerApi.Application.Integrations.Contracts;
 using SchedulerApi.Application.Recipient.Contracts;
 using SchedulerApi.Application.Recipient.Services;

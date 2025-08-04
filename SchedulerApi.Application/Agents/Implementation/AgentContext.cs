@@ -2,7 +2,7 @@ namespace SchedulerApi.Application.Agents.Implementation;
 
 public class AgentContext
 {
-    public string Prompt { get; set; }
+    public string Prompt { get; set; } = string.Empty;
     public Dictionary<string, object?> Results { get; } = new();
     
     public void AddResult<T>(string key, T? result) => Results[key] = result;

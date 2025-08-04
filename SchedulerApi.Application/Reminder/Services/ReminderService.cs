@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration;
+using SchedulerApi.Application.Agents.Context.ScheduleParser.DTOs;
 using SchedulerApi.Application.Agents.Contracts;
 using SchedulerApi.Application.Agents.Implementation;
-using SchedulerApi.Application.Agents.ScheduleParser.DTOs;
 using SchedulerApi.Application.Integrations.Contracts;
 using SchedulerApi.Application.Reminder.Contract;
 using SchedulerApi.Application.Shared.Contracts;
