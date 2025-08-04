@@ -1,3 +1,4 @@
+using SchedulerApi.Application.Agents.Enums;
 using SchedulerApi.Application.Agents.Implementation;
 
 namespace SchedulerApi.Application.Agents.Contracts;
@@ -10,5 +11,5 @@ public interface IAgentService
     
     string GetAgentPrompt();
     
-    Task ExecuteAsync(AgentContext context, CancellationToken cancellationToken = default);
+    Task<AgentExecutionResult> ExecuteAsync(AgentContext context, CancellationToken cancellationToken = default);
 }
