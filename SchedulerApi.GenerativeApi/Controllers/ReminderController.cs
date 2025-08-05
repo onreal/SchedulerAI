@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SchedulerApi.Application.Agents.Context.ScheduleParser.DTOs;
+using SchedulerApi.Application.Agents.Implementation;
 using SchedulerApi.Application.Attributes;
 using SchedulerApi.Application.Reminder.Contract;
 using SchedulerApi.Application.Shared;
@@ -16,7 +17,7 @@ public class ReminderController(IReminderService reminderService) : ControllerBa
 {
     [HttpPost("generate")]
     [RequireApiKey]
-    [ProducesResponseType(typeof(List<ReminderDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AgentResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [Produces("application/json")]
     public async Task<IActionResult> Generate([FromBody] ReminderRequest request)

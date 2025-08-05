@@ -12,15 +12,5 @@ public class IntentClassifierAgent(
         configuration,
         1,
         "IntentClassifierAgent",
-        "SchedulerApi.Application.Prompts.ChatGPT.ClassifierPrompt.txt"
-    )
-{
-    protected override void SetupOnExecuted()
-    {
-        OnExecuted = async context =>
-        {
-            Console.WriteLine($"Agent {AgentName} executed with context data.");
-            await Task.CompletedTask;
-        };
-    }
-}
+        "SchedulerApi.Application.Prompts.ChatGPT.ClassifierPrompt.txt" 
+        );

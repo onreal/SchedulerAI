@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Configuration;
+using SchedulerApi.Application.Agents.Context.IntentClassifier.DTOs;
 using SchedulerApi.Application.Agents.Context.ScheduleParser.DTOs;
 using SchedulerApi.Application.Agents.Contracts;
+using SchedulerApi.Application.Agents.Enums;
 using SchedulerApi.Application.Agents.Implementation;
 using SchedulerApi.Application.Integrations.Contracts;
 using SchedulerApi.Application.Reminder.Contract;
@@ -35,70 +37,31 @@ public class ReminderService : IReminderService
         _recipientRepository = recipientRepository;
     }
 
-    public async Task<List<ReminderDto>> GenerateAsync(ReminderRequest prompt, CancellationToken cancellationToken = default)
+    public async Task<AgentResponse> GenerateAsync(ReminderRequest prompt, CancellationToken cancellationToken = default)
     {
         var agentContext = new AgentContext();
+        
+        AgentResponse response = null;
         
         foreach (var agent in _agentServices)
         {
             agentContext.Prompt = prompt.Message;
             
-            await agent.ExecuteAsync(agentContext, cancellationToken);
+            var generated = await agent.ExecuteAsync(agentContext, cancellationToken);
+            
+            response = agentContext.GetResult<AgentResponse>(agent.GetAgentName());
+            
+            if (generated == AgentExecutionResult.Stop)
+            {
+                break;
+            }
         }
+
+        if (response == null)
+        {
+            response = new AgentResponse("Failed", "Failed to generate response.");
+        }
+
+        return response;
     }
-    
-    // public async Task<List<ReminderDto>> GenerateActionsAsync(ReminderRequest prompt, CancellationToken cancellationToken = default)
-    // {
-    //     _generativeIntegrationServices.SetSystemMessages(PromptHelper.GetPromptFromResource(
-    //         "SchedulerApi.Application.Prompts.ChatGPT.ExtendedReminderExtractPrompt.txt"));
-    //
-    //     var apiUser = _currentUserAccessor.GetUser();
-    //     
-    //     var reminders =
-    //         await _generativeIntegrationServices.GenerateMessageAsync<List<ReminderDto>>(prompt.Message,
-    //             cancellationToken);
-    //     
-    //     reminders.ForEach(item =>
-    //     {
-    //         
-    //     });
-    //     
-    //     return await _generativeIntegrationServices.GenerateMessageAsync<List<ReminderDto>>(prompt.Message, cancellationToken);
-    //     
-    // }
-    //
-    // public async Task SendMessageAsync(string message, CancellationToken cancellationToken = default)
-    // {
-    //     await _transactionalIntegrationServices.SendMessageAsync("+306948896777", message, cancellationToken);
-    // }
-    //
-    // public async Task PerformMessageActionAsync(string message, CancellationToken cancellationToken = default)
-    // {
-    //     await _transactionalIntegrationServices.SendMessageAsync("+306948896777", message, cancellationToken);
-    // }
-    //
-    // public async Task PerformActionAsync(ReminderRequest prompt, CancellationToken cancellationToken = default)
-    // {
-    //     _generativeIntegrationServices.SetSystemMessages(PromptHelper.GetPromptFromResource(
-    //         "SchedulerApi.Application.Prompts.ChatGPT.ExtendedReminderExtractPrompt.txt"));
-    //     
-    //     await _generativeIntegrationServices.GenerateMessageAsync<List<ReminderDto>>(prompt.Message, cancellationToken);
-    //     
-    //     
-    //     
-    //
-    //     foreach (var reminderAction  in reminders)
-    //     {
-    //         if (reminderAction.Names != null)
-    //             foreach (var reminderActionName in reminderAction.Names)
-    //             {
-    //                 var recipient = await _recipientRepository.GetByNameAsync(reminderActionName);
-    //                 if (recipient == null)
-    //                     await _recipientRepository.AddAsync(Domain.Recipient.Recipient.Create());
-    //             }
-    //
-    //         _recipientRepository.GetByNameAsync()
-    //         await SendMessageAsync(reminderAction.Note, cancellationToken);
-    //     }
-    // }
 }

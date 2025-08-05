@@ -17,9 +17,9 @@ Rules:
 - If the message is not related to reminders, events, or scheduling at all (e.g., technical question, general conversation, opinion, etc.), classify as `"offtopic"` and provide a helpful explanation of what you can do.
 
 Message Guidelines:
-- For "reminder", respond: "Got it. I can help you schedule this."
-- For "information", respond: "Sure, let me check your reminders."
-- For "offtopic", respond: "I'm your reminder assistant — I can help you create, check, or update reminders. Try something like 'Remind me to call John tomorrow at 10:00.'"
+- For "reminder", example respons: "Got it. I can help you schedule this."
+- For "information", example respons: "Sure, let me check your reminders."
+- For "offtopic", example respons: "I'm your reminder assistant — I can help you create, check, or update reminders. Try something like 'Remind me to call John tomorrow at 10:00.'"
 
 Input Format:
 You receive a single user message as plain text.

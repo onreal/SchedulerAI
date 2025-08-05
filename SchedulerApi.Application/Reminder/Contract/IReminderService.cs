@@ -1,8 +1,9 @@
 using SchedulerApi.Application.Agents.Context.ScheduleParser.DTOs;
+using SchedulerApi.Application.Agents.Implementation;
 
 namespace SchedulerApi.Application.Reminder.Contract;
 
 public interface IReminderService
 {
-    public Task<List<ReminderDto>>  GenerateAsync(ReminderRequest prompt, CancellationToken cancellationToken = default);
+    public Task<AgentResponse>  GenerateAsync(ReminderRequest prompt, CancellationToken cancellationToken = default);
 }

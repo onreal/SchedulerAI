@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.Extensions.Configuration;
 using SchedulerApi.Application.Agents.Contracts;
 using SchedulerApi.Application.Agents.Enums;
@@ -12,12 +13,23 @@ public abstract class BaseAgent : IAgentService
     protected string AgentName { get; set; }
     protected string AgentPrompt { get; set; }
     protected Func<AgentContext, Task>? OnExecuted { get; set; }
+    protected Func<AgentContext, Task>? BeforeExecute { get; set; }
     
     protected readonly IGenerativeIntegrationServices GenerativeIntegrationServices;
 
-    protected virtual void SetupOnExecuted()
+    protected virtual void SetupBeforeExecute()
     {
-        OnExecuted = null;
+        BeforeExecute = null;
+    }
+
+    protected virtual void AddUserPrompt(string prompt)
+    {
+        GenerativeIntegrationServices.SetSystemMessages(prompt);
+    }
+
+    protected virtual void ClearUserPrompt()
+    {
+        GenerativeIntegrationServices.ClearUserMessages();
     }
 
     protected BaseAgent(
@@ -41,15 +53,20 @@ public abstract class BaseAgent : IAgentService
             PromptHelper.GetPromptFromResource(AgentPrompt)
         );
         
+        if (BeforeExecute != null)
+            await BeforeExecute.Invoke(context);
+        
         var result = await GenerativeIntegrationServices
             .GenerateMessageAsync<AgentResponse>(context.Prompt, cancellationToken);
-        
-        context.AddResult(AgentName, result.Message);
         
         if (OnExecuted != null)
             await OnExecuted.Invoke(context);
         
-        return result.Success ? AgentExecutionResult.Continue : AgentExecutionResult.Stop;
+        context.AddResult(AgentName, result);
+
+        var type = new CultureInfo(result.Type).ToString().ToLower();
+        
+        return  type == "failed" ? AgentExecutionResult.Stop : AgentExecutionResult.Continue;
     }
 
     public int GetAgentOrder()

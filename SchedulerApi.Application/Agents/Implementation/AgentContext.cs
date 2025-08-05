@@ -8,4 +8,14 @@ public class AgentContext
     public void AddResult<T>(string key, T? result) => Results[key] = result;
     
     public T? GetResult<T>(string key) => Results.TryGetValue(key, out var value) ? (T)value! : default;
+    
+    public string? LastResult
+    {
+        get
+        {
+            var value = Results.Last().Value;
+            if (value != null) return value.ToString();
+            return null;
+        }
+    }
 }

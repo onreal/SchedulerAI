@@ -15,7 +15,7 @@ public class SchedulerParserAgent(
     "SchedulerApi.Application.Prompts.ChatGPT.ExtendedReminderExtractPrompt.txt"
 )
 {
-    protected override void SetupOnExecuted()
+    protected override void SetupBeforeExecute()
     {
         OnExecuted = async context =>
         {

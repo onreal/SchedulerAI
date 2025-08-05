@@ -12,14 +12,4 @@ public class ContactEnricherAgent(
     3,
     "ContactEnricherAgent",
     "SchedulerApi.Application.Prompts.ChatGPT.ExportUserDetailsPrompt.txt"
-)
-{
-    protected override void SetupOnExecuted()
-    {
-        OnExecuted = async context =>
-        {
-            Console.WriteLine($"Agent {AgentName} executed with context data.");
-            await Task.CompletedTask;
-        };
-    }
-}
+);

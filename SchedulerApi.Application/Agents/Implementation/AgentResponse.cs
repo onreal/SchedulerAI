@@ -1,3 +1,3 @@
 namespace SchedulerApi.Application.Agents.Implementation;
 
-public record AgentResponse(bool Success, string Message);
+public record AgentResponse(string Type, object Message);

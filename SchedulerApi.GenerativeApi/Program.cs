@@ -88,7 +88,7 @@ services.AddScoped<IReminderService, ReminderService>();
 services.AddScoped<ISchedulerIntegrationRunner, SchedulerIntegrationRunner>();
 services.AddScoped<IAgentService, SchedulerParserAgent>();
 services.AddScoped<IAgentService, IntentClassifierAgent>();
-services.AddScoped<IAgentService, ContactEnricherAgent>();
+// services.AddScoped<IAgentService, ContactEnricherAgent>();
 
 services.AddHttpContextAccessor();
 
