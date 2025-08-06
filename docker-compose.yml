@@ -28,6 +28,8 @@ services:
       - ./App_Data:/app/App_Data
 
   migrator:
+    profiles:
+      - migrate
     build:
       context: .
       dockerfile: Dockerfile.Migrator
