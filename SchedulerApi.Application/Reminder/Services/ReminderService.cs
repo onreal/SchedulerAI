@@ -56,7 +56,7 @@ public class ReminderService : IReminderService
                 break;
             }
         }
-
+        Console.WriteLine("RESPONSEEE:" + response);
         if (response == null)
         {
             response = new AgentResponse("Failed", "Failed to generate response.");

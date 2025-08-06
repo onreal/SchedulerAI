@@ -66,7 +66,7 @@ public abstract class BaseAgent : IAgentService
 
         var type = new CultureInfo(result.Type).ToString().ToLower();
         
-        return  type == "failed" ? AgentExecutionResult.Stop : AgentExecutionResult.Continue;
+        return  type is "failed" or "offtopic" ? AgentExecutionResult.Stop : AgentExecutionResult.Continue;
     }
 
     public int GetAgentOrder()

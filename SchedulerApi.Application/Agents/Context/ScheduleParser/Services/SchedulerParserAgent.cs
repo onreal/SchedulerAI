@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Configuration;
-using SchedulerApi.Application.Agents.Context.ScheduleParser.DTOs;
 using SchedulerApi.Application.Agents.Implementation;
 using SchedulerApi.Application.Integrations.Contracts;
 

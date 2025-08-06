@@ -62,7 +62,7 @@ public class ChatGptIntegrationService : IChatGptIntegrationService
         var chatClient = _client.GetChatClient(_settings.Model);
 
         var response = await chatClient.CompleteChatAsync(_chatMessages.ToList(), cancellationToken: cancellationToken);
-        var cleaned = System.Text.RegularExpressions.Regex.Unescape(response.Value.Content[0].Text);
+        var cleaned = response.Value.Content[0].Text;
         Console.WriteLine("Raw JSON string:" + cleaned);
         return JsonConvert.DeserializeObject<T>(cleaned);
     }

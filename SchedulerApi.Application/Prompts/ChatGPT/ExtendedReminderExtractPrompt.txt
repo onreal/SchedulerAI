@@ -70,6 +70,7 @@ Then:
 - Never group the user’s action with others.
 - Customize the note for the user.
 
+✅  If the only request is for the user to be reminded or notified, create an action only for "User" and no other actions, even if other names are mentioned.
 ---
 
 ## ✅ Multi-event Handling

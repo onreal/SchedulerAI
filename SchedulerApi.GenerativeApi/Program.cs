@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Scalar.AspNetCore;
 using SchedulerApi.Application.Agents.Context.ContactEnricher.Services;
 using SchedulerApi.Application.Agents.Context.IntentClassifier.Services;
@@ -37,12 +38,17 @@ using SchedulerApi.Infrastructure.Services;
 using SchedulerApi.Integrations.Generative.ChatGpt.Services;
 using SchedulerApi.Integrations.Transactional.Twilio.Services;
 using GlobalExceptionMiddleware = SchedulerApi.GenerativeApi.Middlewares.GlobalExceptionMiddleware;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
 services.AddOpenApi();
-services.AddControllers();
+services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+    });
 services.AddEndpointsApiExplorer();
 
 services.AddDbContext<SchedulerDbContext>(options =>
